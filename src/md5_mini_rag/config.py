@@ -28,6 +28,7 @@ class Settings:
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "1200"))
     chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "180"))
     top_k: int = int(os.getenv("TOP_K", "4"))
+    max_distance: float = float(os.getenv("MAX_DISTANCE", "1.2"))
 
 
 def get_settings() -> Settings:

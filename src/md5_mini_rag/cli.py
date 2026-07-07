@@ -91,6 +91,7 @@ def doctor() -> None:
     table.add_row("groq_model", settings.groq_model)
     table.add_row("rag_prompt_path", str(settings.rag_prompt_path))
     table.add_row("moderator_prompt_path", str(settings.moderator_prompt_path))
+    table.add_row("max_distance", str(settings.max_distance))
     table.add_row("groq_api_key", "present" if settings.groq_api_key else "absent")
     console.print(table)
 

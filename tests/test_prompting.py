@@ -5,18 +5,16 @@ from md5_mini_rag.prompting import build_system_prompt, build_user_prompt, forma
 def test_format_source_includes_metadata() -> None:
     source = format_source(
         {
-            "file_name": "code.md",
+            "file_name": "corpus.csv",
             "page": 2,
-            "article": "R001",
             "row_id": "chunk_001",
             "categorie": "animaux",
             "chunk_index": 3,
         }
     )
 
-    assert "code.md" in source
+    assert "corpus.csv" in source
     assert "page 2" in source
-    assert "article R001" in source
     assert "id chunk_001" in source
     assert "categorie animaux" in source
     assert "chunk 3" in source
@@ -26,7 +24,7 @@ def test_build_user_prompt_numbers_sources() -> None:
     result = SearchResult(
         id="1",
         text="Le chat bleu de Bob s'appelle Henri.",
-        metadata={"file_name": "code.md", "article": "R001"},
+        metadata={"file_name": "corpus.csv", "row_id": "chunk_001"},
         distance=0.1,
     )
 

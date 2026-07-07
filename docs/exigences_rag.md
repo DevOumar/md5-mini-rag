@@ -21,6 +21,8 @@ Ce document relie le projet aux bonnes pratiques du mini-TP guide.
 ## Interrogation
 
 - Rechargement de l'index existant.
+- Moderation de la question avant l'appel au RAG principal.
+- Sortie du moderateur en JSON strict avec `prompt_injection` et `raison`.
 - Encodage de la question avec le meme modele.
 - Recherche vectorielle top-k.
 - Prompt systeme strict :

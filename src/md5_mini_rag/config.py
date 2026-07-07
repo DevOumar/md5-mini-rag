@@ -17,10 +17,14 @@ class Settings:
     collection_name: str = os.getenv("COLLECTION_NAME", "mini_rag")
     embedding_model: str = os.getenv(
         "EMBEDDING_MODEL",
-        "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "sentence-transformers/distiluse-base-multilingual-cased-v2",
     )
     groq_api_key: str | None = os.getenv("GROQ_API_KEY") or None
-    groq_model: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    groq_model: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    rag_prompt_path: Path = Path(os.getenv("RAG_PROMPT_PATH", "prompts/rag_system.txt"))
+    moderator_prompt_path: Path = Path(
+        os.getenv("MODERATOR_PROMPT_PATH", "prompts/moderator_system.txt")
+    )
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "1200"))
     chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "180"))
     top_k: int = int(os.getenv("TOP_K", "4"))

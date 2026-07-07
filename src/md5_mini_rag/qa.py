@@ -7,7 +7,7 @@ from .documents import SearchResult
 from .embeddings import SentenceTransformerEmbedder
 from .llm import GroqChatClient
 from .moderation import validate_question
-from .prompting import build_user_prompt
+from .prompting import build_system_prompt, build_user_prompt
 from .vectorstore import ChromaStore
 
 
@@ -42,9 +42,10 @@ class RagService:
                 model=self.settings.groq_model,
             )
 
+        system_prompt = build_system_prompt(self.settings.rag_prompt_path, results)
         prompt = build_user_prompt(question, results)
         llm = GroqChatClient(self.settings)
-        llm_answer = llm.answer(prompt)
+        llm_answer = llm.answer(system_prompt, prompt)
         return RagAnswer(
             question=question,
             answer=llm_answer.content,

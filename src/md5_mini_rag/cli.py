@@ -12,7 +12,7 @@ from .prompting import format_source
 from .qa import RagService
 
 app = typer.Typer(
-    help="Assistant RAG pour le corpus RAG.",
+    help="Mini-RAG pedagogique avec ChromaDB, Sentence Transformers et Groq.",
     pretty_exceptions_show_locals=False,
 )
 console = Console()
@@ -73,6 +73,8 @@ def doctor() -> None:
     table.add_row("collection_name", settings.collection_name)
     table.add_row("embedding_model", settings.embedding_model)
     table.add_row("groq_model", settings.groq_model)
+    table.add_row("rag_prompt_path", str(settings.rag_prompt_path))
+    table.add_row("moderator_prompt_path", str(settings.moderator_prompt_path))
     table.add_row("groq_api_key", "present" if settings.groq_api_key else "absent")
     console.print(table)
 

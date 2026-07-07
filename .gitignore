@@ -1,0 +1,24 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Local RAG data
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+data/chroma/
+data/reports/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

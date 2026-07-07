@@ -8,6 +8,7 @@ from rich.table import Table
 
 from .config import get_settings
 from .indexing import build_index
+from .moderator import Moderator
 from .prompting import format_source
 from .rag import RAG
 
@@ -59,6 +60,21 @@ def ask(
     if answer.sources:
         console.print()
         _print_results(answer.sources)
+
+
+@app.command()
+def moderate(
+    question: Annotated[str, typer.Argument(help="Question a analyser par l'agent moderateur.")],
+) -> None:
+    """Teste seulement l'agent moderateur Groq JSON."""
+    settings = get_settings()
+    result = Moderator(settings).moderate(question)
+    console.print(
+        {
+            "prompt_injection": result.prompt_injection,
+            "raison": result.raison,
+        }
+    )
 
 
 @app.command()

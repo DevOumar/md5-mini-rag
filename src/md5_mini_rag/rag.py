@@ -6,7 +6,7 @@ from .config import Settings
 from .documents import SearchResult
 from .embeddings import SentenceTransformerEmbedder
 from .llm import GroqChatClient
-from .moderation import validate_question
+from .moderator import Moderator
 from .prompting import build_system_prompt, build_user_prompt
 from .vectordb import VectorDB
 
@@ -24,15 +24,22 @@ class RAG:
         self.settings = settings
         self.embedder = SentenceTransformerEmbedder(settings.embedding_model)
         self.store = VectorDB(settings.chroma_dir, settings.collection_name, self.embedder)
+        self.moderator = Moderator(settings)
 
     def retrieve(self, question: str, top_k: int | None = None) -> list[SearchResult]:
-        is_valid, reason = validate_question(question)
-        if not is_valid:
-            raise ValueError(reason or "Question invalide.")
         k = top_k or self.settings.top_k
         return self.store.search(question, top_k=k)
 
     def ask(self, question: str, top_k: int | None = None) -> RagAnswer:
+        moderation = self.moderator.moderate(question)
+        if moderation.prompt_injection:
+            return RagAnswer(
+                question=question,
+                answer=f"Question bloquee par le moderateur : {moderation.raison}",
+                sources=[],
+                model=self.settings.groq_model,
+            )
+
         results = self.retrieve(question, top_k=top_k)
         if not results:
             return RagAnswer(

@@ -25,6 +25,7 @@ Ce document relie le projet aux bonnes pratiques du mini-TP guide.
 - Sortie du moderateur en JSON strict avec `prompt_injection` et `raison`.
 - Encodage de la question avec le meme modele.
 - Recherche vectorielle top-k.
+- Fallback lexical pour les mots presents explicitement dans le corpus, utile pour les noms propres.
 - Refus de reponse si le meilleur chunk depasse le seuil de distance configure.
 - Prompt systeme strict :
   - repondre uniquement avec le contexte ;

@@ -13,6 +13,7 @@ Le corpus utilisé est le fichier CSV fourni par l’enseignant : `data/raw/05_c
 - des embeddings normalisés avec Sentence Transformers ;
 - un corpus CSV chargé avec ses métadonnées (`id`, `source`, `categorie`) ;
 - des prompts système rangés dans le dossier `prompts/` ;
+- un fallback par mot-clé exact pour mieux retrouver les noms propres du corpus ;
 - un agent modérateur Groq qui répond en JSON avant le RAG principal ;
 - une classe `RAG` qui orchestre le pipeline complet ;
 - un seuil de distance pour refuser une réponse quand le meilleur chunk est trop éloigné ;
@@ -78,6 +79,7 @@ data/chroma/
 question utilisateur
 -> modération
 -> recherche vectorielle
+-> fallback lexical si un mot de la question existe explicitement dans le corpus
 -> vérification du seuil de distance
 -> construction du prompt avec les chunks
 -> appel Groq
@@ -130,6 +132,14 @@ rag retrieve "Comment s'appelle le chat bleu de Bob ?" --top-k 3
 ```
 
 Le bon résultat attendu est le chunk qui indique que le chat bleu de Bob s’appelle Henri.
+
+Pour les noms propres, un fallback lexical complète la recherche vectorielle. Par exemple :
+
+```powershell
+rag retrieve "parle moi de Diego ?" --top-k 3
+```
+
+Cette commande doit remonter des chunks contenant explicitement `Diego`, même si la question est courte.
 
 Le RAG utilise aussi un seuil `MAX_DISTANCE` configuré par défaut à `1.2`.
 Si le meilleur chunk est plus éloigné que ce seuil, le système refuse de répondre
@@ -208,7 +218,7 @@ pytest
 À ce stade, les tests passent :
 
 ```text
-9 passed
+13 passed
 ```
 
 ## Point important
@@ -229,6 +239,9 @@ dev
 05-csv-corpus
 06-align-mini-tp
 07-moderator-agent
+08-readme-polish
+09-distance-threshold
+10-keyword-fallback
 ```
 
 La branche `main` contient un merge explicite de `dev`, afin de montrer une branche de développement puis une branche de livraison.

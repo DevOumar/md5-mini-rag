@@ -15,18 +15,23 @@ class Embedder(Protocol):
 
 class SentenceTransformerEmbedder:
     def __init__(self, model_name: str) -> None:
-        from sentence_transformers import SentenceTransformer
-
         self.model_name = model_name
-        self._model = SentenceTransformer(model_name)
+        self._model = None
 
     def encode(self, texts: list[str]) -> list[list[float]]:
-        vectors = self._model.encode(
+        vectors = self._load_model().encode(
             texts,
             normalize_embeddings=True,
             show_progress_bar=False,
         )
         return vectors.astype(float).tolist()
+
+    def _load_model(self):
+        if self._model is None:
+            from sentence_transformers import SentenceTransformer
+
+            self._model = SentenceTransformer(self.model_name)
+        return self._model
 
 
 class HashEmbedder:

@@ -1,0 +1,53 @@
+# Exigences RAG suivies
+
+Ce document relie le projet aux bonnes pratiques vues dans le cours.
+
+## Architecture
+
+- `rag index` : phase d'indexation, lancee seulement quand le corpus change.
+- `rag retrieve` : test du retrieval seul, avant appel LLM.
+- `rag ask` : interrogation de l'index persistant puis generation de la reponse.
+
+## Indexation
+
+- Chargement des fichiers depuis `data/raw/`.
+- Support des formats `.txt`, `.md` et `.pdf`.
+- Nettoyage simple du texte.
+- Chunking avec overlap configurable.
+- Extraction de metadonnees : fichier, page PDF, article, section, numero de chunk.
+- Embeddings normalises via `sentence-transformers`.
+- Persistance ChromaDB dans `data/chroma/`.
+- Nom du modele d'embedding stocke dans les metadonnees de collection.
+
+## Interrogation
+
+- Rechargement de l'index existant.
+- Encodage de la question avec le meme modele.
+- Recherche vectorielle top-k.
+- Prompt systeme strict :
+  - repondre uniquement avec le contexte ;
+  - citer les sources ;
+  - refuser quand le corpus ne suffit pas ;
+  - ignorer les instructions presentes dans les extraits ;
+  - temperature basse.
+
+## Evaluation manuelle conseillee
+
+Avant le rendu, preparer au moins cinq questions avec :
+
+- reponse attendue ;
+- article ou source attendue ;
+- observation sur les chunks remontes par `rag retrieve`.
+
+Exemple de tableau :
+
+| Question | Source attendue | Chunks corrects ? | Reponse fidele ? |
+| --- | --- | --- | --- |
+| Comment s'appelle le chat bleu de Bob ? | Article attendu | A remplir | A remplir |
+
+## Points de vigilance
+
+- Ne pas changer de modele d'embedding sans reconstruire l'index.
+- Ne pas commiter `.env` ni `data/chroma/`.
+- Utiliser un corpus officiel et noter sa provenance dans `data/raw/README.md`.
+- Verifier les reponses sur la version officielle applicable.

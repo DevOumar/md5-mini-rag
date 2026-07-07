@@ -48,6 +48,17 @@ class RAG:
                 sources=[],
                 model=self.settings.groq_model,
             )
+        if _best_chunk_is_too_far(results, self.settings.max_distance):
+            return RagAnswer(
+                question=question,
+                answer=(
+                    "Je ne sais pas avec assez de certitude avec le corpus fourni. "
+                    f"Le meilleur chunk est trop eloigne "
+                    f"(distance {results[0].distance:.4f}, seuil {self.settings.max_distance:.4f})."
+                ),
+                sources=results,
+                model=self.settings.groq_model,
+            )
 
         system_prompt = build_system_prompt(self.settings.rag_prompt_path, results)
         prompt = build_user_prompt(question, results)
@@ -59,3 +70,10 @@ class RAG:
             sources=results,
             model=llm_answer.model,
         )
+
+
+def _best_chunk_is_too_far(results: list[SearchResult], max_distance: float) -> bool:
+    if not results:
+        return False
+    distance = results[0].distance
+    return distance is not None and distance > max_distance

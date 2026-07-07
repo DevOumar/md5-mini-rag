@@ -15,6 +15,7 @@ Le corpus utilisé est le fichier CSV fourni par l’enseignant : `data/raw/05_c
 - des prompts système rangés dans le dossier `prompts/` ;
 - un agent modérateur Groq qui répond en JSON avant le RAG principal ;
 - une classe `RAG` qui orchestre le pipeline complet ;
+- un seuil de distance pour refuser une réponse quand le meilleur chunk est trop éloigné ;
 - une clé API stockée dans `.env`, jamais dans Git ;
 - un workflow Git par branches, avec des commits progressifs.
 
@@ -49,7 +50,8 @@ md5-mini-rag/
 |   |-- test_chunking.py
 |   |-- test_embeddings.py
 |   |-- test_moderator.py
-|   `-- test_prompting.py
+|   |-- test_prompting.py
+|   `-- test_rag.py
 |-- .env.example
 |-- .gitignore
 |-- pyproject.toml
@@ -76,6 +78,7 @@ data/chroma/
 question utilisateur
 -> modération
 -> recherche vectorielle
+-> vérification du seuil de distance
 -> construction du prompt avec les chunks
 -> appel Groq
 -> réponse avec sources
@@ -127,6 +130,10 @@ rag retrieve "Comment s'appelle le chat bleu de Bob ?" --top-k 3
 ```
 
 Le bon résultat attendu est le chunk qui indique que le chat bleu de Bob s’appelle Henri.
+
+Le RAG utilise aussi un seuil `MAX_DISTANCE` configuré par défaut à `1.2`.
+Si le meilleur chunk est plus éloigné que ce seuil, le système refuse de répondre
+avec certitude et affiche les sources retrouvées pour garder la trace du retrieval.
 
 ## Tester le modérateur seul
 

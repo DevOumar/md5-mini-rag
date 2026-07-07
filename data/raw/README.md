@@ -9,11 +9,13 @@ Pour le rendu, noter pour chaque fichier :
 - date de telechargement ;
 - perimetre du document.
 
-Exemple :
+## Corpus inclus
 
 ```text
-mini_rag_duree_travail.pdf
-Source : Legifrance
-Date de telechargement : YYYY-MM-DD
-Perimetre : corpus de demonstration RAG
+05_corpus_rag.csv
+Source : fichier fourni par l'enseignant
+Date d'ajout au projet : 2026-07-07
+Colonnes : id, text, source, categorie
+Perimetre : corpus de demonstration RAG utilise pour tester l'indexation,
+la recherche vectorielle, les metadonnees et les citations de sources.
 ```

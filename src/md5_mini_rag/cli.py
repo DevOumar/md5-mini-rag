@@ -11,7 +11,10 @@ from .indexing import build_index
 from .prompting import format_source
 from .qa import RagService
 
-app = typer.Typer(help="Assistant RAG pour le corpus RAG.")
+app = typer.Typer(
+    help="Assistant RAG pour le corpus RAG.",
+    pretty_exceptions_show_locals=False,
+)
 console = Console()
 
 

@@ -218,7 +218,7 @@ pytest
 À ce stade, les tests passent :
 
 ```text
-13 passed
+15 passed
 ```
 
 ## Point important

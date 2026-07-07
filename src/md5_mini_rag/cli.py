@@ -9,10 +9,10 @@ from rich.table import Table
 from .config import get_settings
 from .indexing import build_index
 from .prompting import format_source
-from .qa import RagService
+from .rag import RAG
 
 app = typer.Typer(
-    help="Assistant RAG pour le corpus RAG.",
+    help="Mini-RAG pedagogique avec ChromaDB, Sentence Transformers et Groq.",
     pretty_exceptions_show_locals=False,
 )
 console = Console()
@@ -41,7 +41,7 @@ def retrieve(
 ) -> None:
     """Teste seulement la recherche vectorielle."""
     settings = get_settings()
-    service = RagService(settings)
+    service = RAG(settings)
     results = service.retrieve(question, top_k=top_k)
     _print_results(results)
 
@@ -53,7 +53,7 @@ def ask(
 ) -> None:
     """Pose une question au RAG avec generation Groq."""
     settings = get_settings()
-    service = RagService(settings)
+    service = RAG(settings)
     answer = service.ask(question, top_k=top_k)
     console.print(answer.answer)
     if answer.sources:
@@ -73,6 +73,8 @@ def doctor() -> None:
     table.add_row("collection_name", settings.collection_name)
     table.add_row("embedding_model", settings.embedding_model)
     table.add_row("groq_model", settings.groq_model)
+    table.add_row("rag_prompt_path", str(settings.rag_prompt_path))
+    table.add_row("moderator_prompt_path", str(settings.moderator_prompt_path))
     table.add_row("groq_api_key", "present" if settings.groq_api_key else "absent")
     console.print(table)
 

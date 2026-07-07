@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .config import Settings
-from .prompting import SYSTEM_PROMPT
 
 
 @dataclass(frozen=True)
@@ -22,13 +21,13 @@ class GroqChatClient:
         self.model = settings.groq_model
         self.client = Groq(api_key=settings.groq_api_key)
 
-    def answer(self, user_prompt: str) -> LlmAnswer:
+    def answer(self, system_prompt: str, user_prompt: str) -> LlmAnswer:
         completion = self.client.chat.completions.create(
             model=self.model,
             temperature=0.1,
             max_tokens=700,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
         )

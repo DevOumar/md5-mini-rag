@@ -7,8 +7,8 @@ from .documents import SearchResult
 from .embeddings import SentenceTransformerEmbedder
 from .llm import GroqChatClient
 from .moderation import validate_question
-from .prompting import build_user_prompt
-from .vectorstore import ChromaStore
+from .prompting import build_system_prompt, build_user_prompt
+from .vectordb import VectorDB
 
 
 @dataclass(frozen=True)
@@ -19,11 +19,11 @@ class RagAnswer:
     model: str
 
 
-class RagService:
+class RAG:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
         self.embedder = SentenceTransformerEmbedder(settings.embedding_model)
-        self.store = ChromaStore(settings.chroma_dir, settings.collection_name, self.embedder)
+        self.store = VectorDB(settings.chroma_dir, settings.collection_name, self.embedder)
 
     def retrieve(self, question: str, top_k: int | None = None) -> list[SearchResult]:
         is_valid, reason = validate_question(question)
@@ -42,9 +42,10 @@ class RagService:
                 model=self.settings.groq_model,
             )
 
+        system_prompt = build_system_prompt(self.settings.rag_prompt_path, results)
         prompt = build_user_prompt(question, results)
         llm = GroqChatClient(self.settings)
-        llm_answer = llm.answer(prompt)
+        llm_answer = llm.answer(system_prompt, prompt)
         return RagAnswer(
             question=question,
             answer=llm_answer.content,

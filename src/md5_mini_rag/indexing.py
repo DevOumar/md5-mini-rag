@@ -6,7 +6,7 @@ from .chunking import chunk_documents
 from .config import Settings
 from .embeddings import SentenceTransformerEmbedder
 from .loaders import load_documents
-from .vectorstore import ChromaStore
+from .vectordb import VectorDB
 
 
 @dataclass(frozen=True)
@@ -27,7 +27,7 @@ def build_index(settings: Settings, reset: bool = False) -> IndexReport:
         chunk_overlap=settings.chunk_overlap,
     )
     embedder = SentenceTransformerEmbedder(settings.embedding_model)
-    store = ChromaStore(settings.chroma_dir, settings.collection_name, embedder)
+    store = VectorDB(settings.chroma_dir, settings.collection_name, embedder)
     if reset:
         store.reset()
     store.upsert_chunks(chunks)

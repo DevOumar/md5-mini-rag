@@ -1,6 +1,6 @@
-# Exigences RAG suivies
+# Exigences mini-TP RAG suivies
 
-Ce document relie le projet aux bonnes pratiques vues dans le cours.
+Ce document relie le projet aux bonnes pratiques du mini-TP guide.
 
 ## Architecture
 
@@ -10,11 +10,10 @@ Ce document relie le projet aux bonnes pratiques vues dans le cours.
 
 ## Indexation
 
-- Chargement des fichiers depuis `data/raw/`.
-- Support des formats `.txt`, `.md` et `.pdf`.
+- Chargement du corpus CSV depuis `data/raw/`.
+- Support principal du format fourni par l'enseignant : `05_corpus_rag.csv`.
 - Nettoyage simple du texte.
-- Chunking avec overlap configurable.
-- Extraction de metadonnees : fichier, page PDF, article, section, numero de chunk.
+- Extraction de metadonnees : fichier, id de ligne, source, categorie, numero de chunk.
 - Embeddings normalises via `sentence-transformers`.
 - Persistance ChromaDB dans `data/chroma/`.
 - Nom du modele d'embedding stocke dans les metadonnees de collection.
@@ -43,11 +42,11 @@ Exemple de tableau :
 
 | Question | Source attendue | Chunks corrects ? | Reponse fidele ? |
 | --- | --- | --- | --- |
-| Comment s'appelle le chat bleu de Bob ? | Article attendu | A remplir | A remplir |
+| Comment s'appelle le chat bleu de Bob ? | chunk_001 | A remplir | A remplir |
 
 ## Points de vigilance
 
 - Ne pas changer de modele d'embedding sans reconstruire l'index.
 - Ne pas commiter `.env` ni `data/chroma/`.
-- Utiliser un corpus officiel et noter sa provenance dans `data/raw/README.md`.
-- Verifier les reponses sur la version officielle applicable.
+- Utiliser le corpus CSV fourni par l'enseignant.
+- Verifier que les reponses citent les sources du corpus.

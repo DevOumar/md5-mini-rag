@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "md5-mini-rag"
 version = "0.1.0"
-description = "Assistant RAG pour interroger un corpus du corpus RAG."
+description = "Mini-RAG pedagogique avec ChromaDB, Sentence Transformers et Groq."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -37,3 +37,4 @@ target-version = "py310"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]

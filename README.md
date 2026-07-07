@@ -208,7 +208,7 @@ pytest
 À ce stade, les tests passent :
 
 ```text
-9 passed
+11 passed
 ```
 
 ## Point important
@@ -229,6 +229,8 @@ dev
 05-csv-corpus
 06-align-mini-tp
 07-moderator-agent
+08-readme-polish
+09-distance-threshold
 ```
 
 La branche `main` contient un merge explicite de `dev`, afin de montrer une branche de développement puis une branche de livraison.

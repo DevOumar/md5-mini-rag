@@ -9,7 +9,7 @@ from rich.table import Table
 from .config import get_settings
 from .indexing import build_index
 from .prompting import format_source
-from .qa import RagService
+from .rag import RAG
 
 app = typer.Typer(
     help="Mini-RAG pedagogique avec ChromaDB, Sentence Transformers et Groq.",
@@ -41,7 +41,7 @@ def retrieve(
 ) -> None:
     """Teste seulement la recherche vectorielle."""
     settings = get_settings()
-    service = RagService(settings)
+    service = RAG(settings)
     results = service.retrieve(question, top_k=top_k)
     _print_results(results)
 
@@ -53,7 +53,7 @@ def ask(
 ) -> None:
     """Pose une question au RAG avec generation Groq."""
     settings = get_settings()
-    service = RagService(settings)
+    service = RAG(settings)
     answer = service.ask(question, top_k=top_k)
     console.print(answer.answer)
     if answer.sources:

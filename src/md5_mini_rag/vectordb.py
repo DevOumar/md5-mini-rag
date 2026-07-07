@@ -7,7 +7,7 @@ from .documents import Chunk, SearchResult
 from .embeddings import Embedder
 
 
-class ChromaStore:
+class VectorDB:
     def __init__(
         self,
         persist_dir: Path,

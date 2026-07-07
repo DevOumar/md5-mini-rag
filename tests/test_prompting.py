@@ -8,6 +8,8 @@ def test_format_source_includes_metadata() -> None:
             "file_name": "code.md",
             "page": 2,
             "article": "R001",
+            "row_id": "chunk_001",
+            "categorie": "animaux",
             "chunk_index": 3,
         }
     )
@@ -15,6 +17,8 @@ def test_format_source_includes_metadata() -> None:
     assert "code.md" in source
     assert "page 2" in source
     assert "article R001" in source
+    assert "id chunk_001" in source
+    assert "categorie animaux" in source
     assert "chunk 3" in source
 
 
